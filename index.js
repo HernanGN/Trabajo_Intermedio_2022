@@ -2,7 +2,6 @@ require("dotenv").config()
 
 require("./data/config")
 
-//const port = process.env.port || 8000
 const PORT = process.env.PORT
 
 const express = require("express")
@@ -11,11 +10,9 @@ const path = require("path")
 
 const hbs = require("express-handlebars")
 
-//const { restart } = require("nodemon")
-
 const server = express()
 
-// Bottstrap file access via static routes
+// Bootstrap file access via static routes
 server.use("/css", express.static(path.join(__dirname, "node_modules/bootstrap/dist/css")))
 server.use("/js", express.static(path.join(__dirname, "node_modules/bootstrap/dist/js")))
 
@@ -37,11 +34,11 @@ server.get("/", (req, res) => {
     res.send(content)
 })
 
-// Router for /users endpoint
-  server.use("/users", require("./users/usersRoute"))
+// Router for /pres endpoint (Prestadores = Providers)
+  server.use("/prov", require("./prov/provRoute"))
 
-// Router for /posts endpoint
-server.use("/posts", require("./posts/postsRoute"))
+// Router for /auto endpoint (Autorizaciones = Authorizations)
+server.use("/auto", require("./auto/autoRoute"))
 
 
 // Catch all route

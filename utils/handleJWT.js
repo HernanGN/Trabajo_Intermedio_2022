@@ -3,10 +3,9 @@ const jwt = require("jsonwebtoken");
 const key = process.env.jwt_secret;
 
 // Creamos el Token, recibe el payload (user) y una medida de tiempo (time)
-const tokenSign = async(user, time) => {
-    // const sign = jwt.sign(user, key, {expiresIn: time})
+const tokenSign = async(prov, time) => {
     // return sign
-    return jwt.sign(user, key, {expiresIn: time})
+    return jwt.sign(prov, key, {expiresIn: time})
 }
 
 // Verificar que el Token esté firmado por el backend y que no haya expirado
