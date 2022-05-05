@@ -40,7 +40,6 @@ server.get("/", (req, res) => {
 // Router for /auto endpoint (Autorizaciones = Authorizations)
 server.use("/auto", require("./auto/autoRoute"))
 
-
 // Catch all route
 server.use((req, res, next) =>{
     let error = new Error
