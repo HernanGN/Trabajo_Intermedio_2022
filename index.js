@@ -38,7 +38,7 @@ server.get("/", (req, res) => {
 //server.use("/prov", require("./prov/provRoute"))
 
 // Router for /auto endpoint (Autorizaciones = Authorizations)
-server.use("/auto", require("./auto/autoRoute"))
+//server.use("/auto", require("./auto/autoRoute"))
 
 // Catch all route
 server.use((req, res, next) =>{
