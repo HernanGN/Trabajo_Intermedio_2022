@@ -35,7 +35,7 @@ server.get("/", (req, res) => {
 })
 
 // Router for /prov endpoint (Prestadores = Providers)
-//server.use("/prov", require("./prov/provRoute"))
+server.use("/prov", require("./prov/provRoute"))
 
 // Router for /auto endpoint (Autorizaciones = Authorizations)
 //server.use("/auto", require("./auto/autoRoute"))
