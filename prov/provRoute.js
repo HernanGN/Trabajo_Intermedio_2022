@@ -18,7 +18,7 @@ router.get("/:id", listOne);
 router.post("/register", fileUpload.single("file"), validatorCreateProv, addOne);
 
 // Provider Login
-router.post("/login", validatorLoginPres, login);
+router.post("/login", validatorLoginProv, login);
 
 // Provider Password Recovery
 router.post("/recovery", recovery)
