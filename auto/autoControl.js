@@ -1,6 +1,6 @@
 //const { tokenSign } = require("../utils/handleJWT");
 
-const { addNewPost, getPostsWith, getAllPosts } = require("./postsModel");
+const { addNewPost, getPostsWith, getAllPosts } = require("./autoModel");
 
 const listAll = async(req, res, next) => {
     //console.log("Router listar todos los Posts")

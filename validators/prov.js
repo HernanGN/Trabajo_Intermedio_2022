@@ -77,4 +77,4 @@ const validatorResetPassword = [
     }
 ]
 
-module.exports = { validatorCreateUser, validatorLoginProv, validatorResetPassword }
+module.exports = { validatorCreateProv, validatorLoginProv, validatorResetPassword }
