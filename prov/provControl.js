@@ -41,7 +41,7 @@ const addOne = async(req, res, next) => {
         domicilio: cleanBody.domicilio,
         ciudad:    cleanBody.ciudad,
         telefono:  cleanBody.telefono,
-        email:     cleanBody.email,
+        correo:    cleanBody.correo,
     }
     const tokenData = {
         token: await tokenSign(prov, '2h'),
@@ -64,8 +64,8 @@ const login = async(req, res, next) => {
                 domicilio:   dbResponse[0].domicilio,
                 ciudad:      dbResponse[0].ciudad,
                 telefono:    dbResponse[0].telefono,
-                email:       dbResponse[0].email,
-                logo:        dbResponse[0].logo
+                correo:      dbResponse[0].email,
+                imagen:      dbResponse[0].imagen
             };
             const tokenData = {
                 token: await tokenSign(prov, '2h'),
@@ -103,8 +103,8 @@ const recovery = async (req, res, next) => {
             domicilio:   dbResponse[0].domicilio,
             ciudad:      dbResponse[0].ciudad,
             telefono:    dbResponse[0].telefono,
-            email:       dbResponse[0].email,
-            logo:        dbResponse[0].logo
+            correo:      dbResponse[0].correo,
+            imagen:      dbResponse[0].imagen
         }
         const token = await tokenSign(prov, "3h")// "15m")
         const link = `${process.env.url_base}prov/reset/${token}`
@@ -119,7 +119,7 @@ const recovery = async (req, res, next) => {
         }
         transport.sendMail(mailDetails, (err, data) => {
             if (err) return next(err);
-            res.status(200).json({message: `Hola ${prov.nombre}, enviamos un correo a ${prov.email}. Ud. tiene 15 minutos para restablecer su contraseña` })
+            res.status(200).json({message: `Hola ${prov.nombre}, enviamos un correo a ${prov.correo}. Ud. tiene 15 minutos para restablecer su contraseña` })
         })
     }
 }
