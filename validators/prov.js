@@ -1,28 +1,37 @@
 const { check, validationResult } = require("express-validator")
 
 const validatorCreateProv = [
-    check("name")
-        .exists().withMessage("Name field is required")
+    check("nombre")
+        .exists().withMessage("El campo Nombre es obligatorio.")
         .trim()
-        .notEmpty().withMessage("Name can't be spaces") // Redundante
-        .isAlpha('es-ES', { ignore: ' ' }).withMessage("Only letters please")
-        .isLength({ min:2, max: 90 }).withMessage("Character count: Min 2, Max 90"),
-    check("username")
-        .exists().withMessage("Username field is required")
+        .isAlpha('es-ES', { ignore: ' ' }).withMessage("Solo letras en el Nombre por favor.")
+        .isLength({ min:10, max: 100 }).withMessage("Largo mínimo de Nombre 10 caracteres, máximo 100."),
+    check("usuario")
+        .exists().withMessage("El campo Usuario es obligatorio.")
         .trim()
-        .isAlpha('es-ES', { ignore: ' ' }).withMessage("Only letters please")
-        .isLength({ min:2, max: 90 }).withMessage("Character count: Min 2, Max 90"),
-    check("email")
-        .exists().withMessage("Email field is required")
+        .isLength({ min:6, max: 20 }).withMessage("Largo mínimo de Usuario 6 caracteres, máximo 20."),
+    check("domicilio")
+        .exists().withMessage("El campo Domicilio es obligatorio.")
         .trim()
-        .isEmail().withMessage("Must be a valid Email address")
+        .isLength({ min:10, max: 50 }).withMessage("Largo mínimo de Domicilio 10 caracteres, máximo 50."),
+    check("ciudad")
+        .exists().withMessage("El campo Ciudad es obligatorio.")
+        .trim()
+        .isLength({ min:10, max: 50 }).withMessage("Largo mínimo de Ciudad 10 caracteres, máximo 50."),
+    check("telefono")
+        .exists().withMessage("El campo Teléfono es obligatorio.")
+        .trim()
+        .isLength({ min:5, max: 25 }).withMessage("Largo mínimo de Teléfono 5 caracteres, máximo 25."),
+    check("correo")
+        .trim()
+        .isEmail().withMessage("Por favor verifique el campo Correo.")
         .normalizeEmail(),
-    check("password")
-        .exists().withMessage("Password field is required")
+    check("clave")
+        .exists().withMessage("El campo Clave es requerido.")
         .trim()
-        .isLength({ min: 8 }).withMessage("Character count: Min 8"),
+        .isLength({ min: 8, max: 15 }).withMessage("La Clave debe tener un largo mínimo 8 caracteres y máximo de 15."),
     (req, res, next) => {
-        // Averiguamos si hay errores de validación y los envolvemos en un objeto que tiene varias funciones útiles
+        // Errors Check
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             return res.status(400).json({ errores: errors.array() })
