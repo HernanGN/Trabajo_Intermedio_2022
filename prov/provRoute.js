@@ -1,6 +1,6 @@
 // References to the associated Routes and subroutes, also Controllers and Middlewares
 
-const{ listAll, listOne, addOne, login, recovery, reset, saveNewPass, editOne, delOne } = require("./prov1Control")
+const{ listAll, listOne, addOne, login, recovery, reset, saveNewPass, editOne, delOne } = require("./provControl")
 
 const router = require("express").Router()
 

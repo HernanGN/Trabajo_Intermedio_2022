@@ -1,6 +1,6 @@
 // Handling the Behavior of our API each time a request is received through the routes
 
-const { getAllProv, getProvById, addProv, loginProv, editProvById, delProvById } = require("./prov1Model")
+const { getAllProv, getProvById, addProv, loginProv, editProvById, delProvById } = require("./provModel")
 
 const notNumber = require("../utils/notNumber")
 
