@@ -17,7 +17,7 @@ const validatorCreateProv = [
     check("ciudad")
         .exists().withMessage("El campo Ciudad es obligatorio.")
         .trim()
-        .isLength({ min:10, max: 50 }).withMessage("Largo mínimo de Ciudad 10 caracteres, máximo 50."),
+        .isLength({ min:5, max: 50 }).withMessage("Largo mínimo de Ciudad 5 caracteres, máximo 50."),
     check("telefono")
         .exists().withMessage("El campo Teléfono es obligatorio.")
         .trim()
