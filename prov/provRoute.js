@@ -15,7 +15,8 @@ router.get("/", listAll);
 router.get("/:id", listOne);
 
 // Add a new Provider
-router.post("/add", fileUpload.single("imagen"), validatorCreateProv, addOne);
+//router.post("/add", fileUpload.single("imagen"), validatorCreateProv, addOne);
+router.post("/add", addOne);
 
 // Provider Login
 router.post("/login", validatorLoginProv, login);
