@@ -32,8 +32,7 @@ const listOne = async(req, res, next) => {
 // Add New Provider
 const addOne = async(req, res, next) => {
     const cleanBody = matchedData(req)   
-    console.log(req)
-    const image = url + req.imagen.filename;
+    //const image = url + req.imagen.filename;
     const password = await hashPassword(cleanBody.password)
     const dbResponse = await addProv({...cleanBody, password, image})
     if (dbResponse instanceof Error) return next(dbResponse);
