@@ -1,6 +1,6 @@
 const router = require("express").Router()
 
-const {listAll, addOne} = require("./autoControl");
+const {listAll, addOne} = require("./authControl");
 
 const isAuth = require("../middlewares/isAuth");
 

@@ -3,6 +3,7 @@
 const res = require("express/lib/response")
 const pool = require("../data/config")
 
+// 1 - Get All Providers
 const getAllProv = () => {
     const query = "SELECT * FROM prestadores"
     try {
@@ -13,6 +14,7 @@ const getAllProv = () => {
     }    
 }
 
+// 2 - Get Provider By Id
 const getProvById = (id) => {
     const query = `SELECT * FROM prestadores WHERE idprestador = ${id}`
     try {
@@ -23,6 +25,7 @@ const getProvById = (id) => {
     }    
 }
 
+// 3 - Add Provider
 const addProv = (prov) => {
     const query = `INSERT INTO prestadores SET ?`
     try {
@@ -33,16 +36,7 @@ const addProv = (prov) => {
     }        
 }
 
-const loginProv = (email) => {
-    const query = `SELECT * FROM prestadores WHERE email = '${email}'`
-    try {
-        return pool.query(query)
-    } catch (error) {
-        error.message = error.code
-        return error
-    }
-}
-
+// 4 - Edit Provider By Id
 const editProvById = (id, prov) => {
     const query = `UPDATE prestadores SET ? WHERE idprestador = ${id}`;
     try {
@@ -53,6 +47,7 @@ const editProvById = (id, prov) => {
     }
 }
 
+// 5 - Delete Provider By Id
 const delProvById = (id) =>{
     const query = `DELETE FROM prestadores WHERE idprestador = ${id}`
     try {
@@ -63,4 +58,37 @@ const delProvById = (id) =>{
     }
 }
 
-module.exports = { getAllProv, getProvById, addProv, loginProv, editProvById, delProvById }
+// 6a - Get Provider By Name
+const getProvByName = (string) => {
+    const query = `SELECT * FROM prestadores WHERE nombre LIKE '%${string}%'`;
+    try {
+        return pool.query(query);
+    } catch (error) {
+        error.message = error.code;
+        return error;
+    }
+}
+
+// 6b - Get Provider By City
+const getProvByCity = (string) => {
+    const query = `SELECT * FROM prestadores WHERE ciudad LIKE '%${string}%'`;
+    try {
+        return pool.query(query);
+    } catch (error) {
+        error.message = error.code;
+        return error;
+    }
+}
+
+// 7 - Login Provider
+const loginProv = (user) => {
+    const query = `SELECT * FROM prestadores WHERE usuario = '${user}'`
+    try {
+        return pool.query(query)
+    } catch (error) {
+        error.message = error.code
+        return error
+    }
+}
+
+module.exports = { getAllProv, getProvById, addProv, editProvById, delProvById, getProvByName, getProvByCity, loginProv}

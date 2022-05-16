@@ -1,6 +1,6 @@
 // Handling the Behavior of our API each time a request is received through the routes
 
-const { getAllProv, getProvById, addProv, loginProv, editProvById, delProvById } = require("./provModel")
+const { getAllProv, getProvById, addProv, editProvById, delProvById, getProvByName, getProvByCity, loginProv } = require("./provModel")
 
 const notNumber = require("../utils/notNumber")
 
@@ -14,14 +14,23 @@ const nodemailer = require("nodemailer")
 
 const url = process.env.url_base
 
-// Read All the Providers (Prestadores)
+// 1 - Read All or Search Providers (Prestadores)
 const listAll = async(req, res, next) => {
-    const dbResponse = await getAllProv()
+    let dbResponse = null;
+    if(req.query.nombre) {
+        dbResponse = await getProvByName(req.query.nombre);
+    } else {
+        if(req.query.ciudad) {
+            dbResponse = await getProvByCity(req.query.ciudad);
+        } else {        
+            dbResponse = await getAllProv();
+        }
+    }
     if ( dbResponse instanceof Error ) return next(dbResponse);
     dbResponse.length ? res.status(200).json(dbResponse) : next()
 }
 
-// Read One Provider
+// 2 - Read One Provider
 const listOne = async(req, res, next) => {
     if(notNumber(req.params.id, res)) return
     const dbResponse = await getProvById(Number(req.params.id))
@@ -29,49 +38,63 @@ const listOne = async(req, res, next) => {
     dbResponse.length ? res.status(200).json(dbResponse) : next()
 }
 
-// Add New Provider
+// 3 - Add New Provider
 const addOne = async(req, res, next) => {
     const cleanBody = matchedData(req)   
-    const image = url + req.imagen.filename;
-    const password = await hashPassword(cleanBody.password)
-    const dbResponse = await addProv({...cleanBody, password, image})
+    const image = url + req.file.filename;
+    const password = await hashPassword(cleanBody.clave)
+    const dbResponse = await addProv({...cleanBody, imagen: image, clave: password})
     if (dbResponse instanceof Error) return next(dbResponse);
     const prov = {
+        usuario:   cleanBody.usuario,
         nombre:    cleanBody.nombre,
-        domicilio: cleanBody.domicilio,
-        ciudad:    cleanBody.ciudad,
-        telefono:  cleanBody.telefono,
         correo:    cleanBody.correo,
     }
     const tokenData = {
         token: await tokenSign(prov, '2h'),
         prov 
     };
-    res.status(201).json({prov: cleanBody.nombre, Token_Info: tokenData});
+    res.status(201).json({prov: cleanBody.usuario, Token_Info: tokenData});
 };
 
-// Provider Login
+// 4 - Provider Edit
+const editOne = async(req, res, next) => {
+    if(notNumber(req.params.id, res)) return
+    const dbResponse = await editProvById(+req.params.id, req.body)
+    if ( dbResponse instanceof Error ) return next(dbResponse);
+    dbResponse.affectedRows ? res.status(200).json(req.body) : next()
+}
+
+// 5 - Provider Delete
+const delOne = async(req, res, next) => {
+    if(notNumber(req.params.id, res)) return
+    const dbResponse = await delProvById(+req.params.id)
+    if ( dbResponse instanceof Error ) return next(dbResponse);
+    dbResponse.affectedRows ? res.status(204).end() : next()
+}
+
+// 6 - Provider Search
+// listAll Reuse
+
+// 7 - Provider Login
 const login = async(req, res, next) => {
     const cleanBody = matchedData(req)
-    const dbResponse = await loginProv(cleanBody.email)
+    const dbResponse = await loginProv(cleanBody.usuario)
     if (dbResponse.length <= 0) {
         return next();
     } else {
         if (await checkPassword(cleanBody.clave, dbResponse[0].clave)){
             const prov = {
                 idprestador: dbResponse[0].idprestador,
+                usuario:     dbResponse[0].usuario,
                 nombre:      dbResponse[0].nombre,
-                domicilio:   dbResponse[0].domicilio,
-                ciudad:      dbResponse[0].ciudad,
-                telefono:    dbResponse[0].telefono,
-                correo:      dbResponse[0].email,
-                imagen:      dbResponse[0].imagen
+                correo:      dbResponse[0].correo
             };
             const tokenData = {
                 token: await tokenSign(prov, '2h'),
                 prov
             };
-            res.status(200).json({message: `Prov ${prov.nombre} logged in!`, Token_info: tokenData})
+            res.status(200).json({message: `Prov ${prov.usuario} logged in!`, Token_info: tokenData})
         } else {
             let error = new Error
             error.status = 401
@@ -81,7 +104,7 @@ const login = async(req, res, next) => {
     }
 }
 
-// Configurar nodemailer
+// 8_ - Configurar nodemailer
 const transport = nodemailer.createTransport({
     host: "smtp.mailtrap.io",
     port: 2525,
@@ -91,9 +114,9 @@ const transport = nodemailer.createTransport({
     }
   });
 
-// Forgot Pass
+// 8a - Password Recovery
 const recovery = async (req, res, next) => {
-    const dbResponse = await loginProv(req.body.email)
+    const dbResponse = await loginProv(req.body.usuario)
     if (dbResponse.length <= 0) {
         return next();
     } else {
@@ -110,7 +133,7 @@ const recovery = async (req, res, next) => {
         const link = `${process.env.url_base}prov/reset/${token}`
         const mailDetails = {
             from: "soporte@serviciomedico.com",
-            to: prov.email,
+            to: prov.correo,
             subject: "Password Recovery",
             html:
             `<h2>Centro de Recuperación de Contraseña</h2>
@@ -124,8 +147,7 @@ const recovery = async (req, res, next) => {
     }
 }
 
-
-// Reset Password Form (Get)
+// 8b - Reset Password Form (Get)
 const reset = async (req, res, next) => {
     const { token } = req.params
     const tokenStatus = await tokenVerify(req.params.token)
@@ -136,30 +158,17 @@ const reset = async (req, res, next) => {
     }
  }
 
-// Response to the Reset Pass Form (Post)
-const saveNewPass = async (req, res, next) => { 
+// 8c - Response to the Reset Pass Form (Post)
+const saveNewPass = async (req, res, next) => {
     const { token } = req.params
     const tokenStatus = await tokenVerify( token )
     if (tokenStatus instanceof Error) return next(tokenStatus);
     const newPassword = await hashPassword(req.body.password_1)
-    const dbResponse = await editProvById(tokenStatus.id, { password: newPassword })
-    dbResponse instanceof Error? next(dbResponse): res.status(200).json({ message: `Clave actualizada para el Prestador ${tokenStatus.name}`})
+    const dbResponse = await editProvById(tokenStatus.idprestador, { clave: newPassword })
+    dbResponse instanceof Error? next(dbResponse): res.status(200).json({ message: `Clave actualizada para el Prestador ${tokenStatus.nombre}`})
 }
 
-// Provider Edit
-const editOne = async(req, res, next) => {
-    if(notNumber(req.params.id, res)) return
-    const dbResponse = await editProvById(+req.params.id, req.body)
-    if ( dbResponse instanceof Error ) return next(dbResponse);
-    dbResponse.affectedRows ? res.status(200).json(req.body) : next()
-}
+// 9 - Medical Benefit Authorization
 
-// Provider Delete
-const delOne = async(req, res, next) => {
-    if(notNumber(req.params.id, res)) return
-    const dbResponse = await delProvById(+req.params.id)
-    if ( dbResponse instanceof Error ) return next(dbResponse);
-    dbResponse.affectedRows ? res.status(204).end() : next()
-}
 
-module.exports = { listAll, listOne, addOne, login, recovery, reset, saveNewPass, editOne, delOne }
+module.exports = { listAll, listOne, addOne, editOne, delOne, login, recovery, reset, saveNewPass }

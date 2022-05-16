@@ -28,8 +28,9 @@ server.use(express.static('storage'))
 
 server.get("/", (req, res) => {
     const content = `
-    <h1>Server con Express</h1>
-    <pre>Primera prueba de servidor con Node y el framework Express</pre>
+    <h1>API Servicio Médico de la Caja de Abogados</h1>
+    <h2><a href="https://documenter.getpostman.com/view/18107569/UyxjHmqd"
+           target="_blank">Consulte Nuestra Documentación para Utilizarla</a></h2>
     `
     res.send(content)
 })
@@ -37,10 +38,10 @@ server.get("/", (req, res) => {
 // Router for /prov endpoint (Prestadores = Providers)
 server.use("/prov", require("./prov/provRoute"))
 
-// Router for /auto endpoint (Autorizaciones = Authorizations)
-//server.use("/auto", require("./auto/autoRoute"))
+// Router for /auth endpoint (Autorizaciones = Authorizations)
+server.use("/auth", require("./auth/authRoute"))
 
-// Catch all route
+// Catch All Route
 server.use((req, res, next) =>{
     let error = new Error
     error.status = 404
@@ -59,5 +60,5 @@ server.use((error, req, res, next) => {
 })
 
 server.listen(PORT, (err) => {
-    err ? console.log(`Error: ${err}`) : console.log(`App corre en puerto:${PORT}`)
+    err ? console.log(`Error: ${err}`) : console.log(`App corre en puerto:${port}`)
 });

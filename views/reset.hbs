@@ -1,16 +1,16 @@
 <section class="mt-5 container">
     <div class="row justify-content-center">
-        <h2 class="my-5 text-center">Pass Recovery</h2>
-        <p class="text-center">Welcome {{tokenStatus.name}}</p>
+        <h2 class="my-5 text-center">Recuperación de Contraseña</h2>
+        <p class="text-center">Bienvenido {{tokenStatus.nombre}}</p>
         <div class="col-10 col-lg-5">
-            <form action="/users/reset/{{token}}" method="post" class="border border-dark rounded p-4">
+            <form action="/prov/reset/{{token}}" method="post" class="border border-dark rounded p-4">
                 <input class="form-control mt-3" type="password" maxlength="15" placeholder="Type New Pass" autocomplete="new-password" name="password_1" autofocus>
                 <div id="passwordHelpBlock" class="form-text mb-4">
-                    Your password must be 8-15 character long.
+                    Su clave debe tener de 8 a 15 caracteres de longitud.
                 </div>
                 <input class="form-control" type="password" maxlength="15" placeholder="Repeat New Pass" autocomplete="new-password" name="password_2">
                 <div id="repeatPasswordHelpBlock" class="form-text mb-5">
-                    Both passwords must be identical.
+                    Ambas claves deben ser idénticas.
                 </div>
 
                 {{#each arrWarnings}}
