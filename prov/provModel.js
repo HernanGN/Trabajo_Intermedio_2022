@@ -56,6 +56,7 @@ const registrarUnooo = async (prov) => {
         error.message = error.code
         return error
     }
+}
 
 // 4 - Edit Provider By Id
 const editProvById = (id, prov) => {
