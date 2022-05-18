@@ -57,28 +57,6 @@ const addOne = async(req, res, next) => {
     res.status(201).json({prov: cleanBody.usuario, Token_Info: tokenData});
 };
 
-// Prueba Agregar Uno - Luego Borrar este Código
-const agregarUno = async(req, res, next) => {
-    console.log("agregarUno req", req.body)
-    const { usuario, nombre} = req.body
-    if(!usuario || !nombre || usuario === "" || nombre === "") {
-        let error = new Error ("All fields required")
-        error.status = 400
-        next(error)
-    } else {
-        const dbResponse = await agregarUnooo(req.body)
-        dbResponse.hasOwnProperty("error") ? res.status(500).json(dbResponse) : res.status(201).json(req.body)
-
-    }
-}
-
-// Agregar Un Prestador - Luego Borrar Este Código
-const registrarUno = async(req, res, next) => {
-    const clave = await hashPassword(req.body.clave)
-    const dbResponse = await registrarUnooo({...req.body, clave})
-    dbResponse instanceof Error ? next(dbResponse) : res.status(201).json(`Prov ${req.body.usuario} created`)
-}
-
 // 4 - Provider Edit
 const editOne = async(req, res, next) => {
     if(notNumber(req.params.id, res)) return

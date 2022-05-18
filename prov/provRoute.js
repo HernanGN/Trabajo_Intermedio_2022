@@ -17,12 +17,6 @@ router.get("/:id", listOne);
 // 3 - Add a new Provider
 router.post("/add", fileUpload.single("imagen"), validatorCreateProv, addOne);
 
-// Agregar = Luego Borrar Este Código
-router.post("/", agregarUno);
-
-// Agregar = Luego Borrar Este Código
-router.post("/registrar", registrarUno);
-
 // 4 - Provider Edit
 router.patch("/:id", editOne);
 
