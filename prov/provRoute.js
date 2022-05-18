@@ -1,6 +1,6 @@
 // References to the associated Routes and subroutes, also Controllers and Middlewares
 
-const{ listAll, listOne, addOne, login, recovery, reset, saveNewPass, editOne, delOne, agregarUno } = require("./provControl")
+const{ listAll, listOne, addOne, login, recovery, reset, saveNewPass, editOne, delOne, agregarUno, registrarUno } = require("./provControl")
 
 const router = require("express").Router()
 
@@ -21,7 +21,7 @@ router.post("/add", fileUpload.single("imagen"), validatorCreateProv, addOne);
 router.post("/", agregarUno);
 
 // Agregar = Luego Borrar Este Código
-router.post("/register", register);
+router.post("/register", registrarUno);
 
 // 4 - Provider Edit
 router.patch("/:id", editOne);
