@@ -79,9 +79,7 @@ const register = async(req, res, next) => {
     //const resultado = await hashPassword(req.body.password)
     //console.log("Contraseña original:", req.body.password)
     //console.log("Contraseña encriptada", resultado)
-    console.log("Contraseña original:", req.body.clave)
     const clave = await hashPassword(req.body.clave)
-    console.log("Contraseña encriptada", clave)
     const dbResponse = await registerProv({...req.body, clave})
     dbResponse instanceof Error ? next(dbResponse) : res.status(201).json(`Prov ${req.body.usuario} created`)
 }
