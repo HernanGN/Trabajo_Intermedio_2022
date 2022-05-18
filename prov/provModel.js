@@ -37,7 +37,7 @@ const addProv = (prov) => {
 }
 
 // Agregar Uno - Luego Borrar este Código
-const agregarUnooo = async (user) =>{
+const agregarUnooo = async (user) => {
     const query = `INSERT INTO prestadores SET ?`
     try {
         return await pool.query(query, user)
@@ -102,4 +102,4 @@ const loginProv = (user) => {
     }
 }
 
-module.exports = { getAllProv, getProvById, addProv, editProvById, delProvById, getProvByName, getProvByCity, loginProv}
+module.exports = { getAllProv, getProvById, addProv, editProvById, delProvById, getProvByName, getProvByCity, loginProv, agregarUnooo}
