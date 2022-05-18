@@ -1,6 +1,6 @@
 // Handling the Behavior of our API each time a request is received through the routes
 
-const { getAllProv, getProvById, addProv, editProvById, delProvById, getProvByName, getProvByCity, loginProv } = require("./provModel")
+const { getAllProv, getProvById, addProv, editProvById, delProvById, getProvByName, getProvByCity, loginProv, agregarUnooo } = require("./provModel")
 
 const notNumber = require("../utils/notNumber")
 
@@ -56,6 +56,21 @@ const addOne = async(req, res, next) => {
     };
     res.status(201).json({prov: cleanBody.usuario, Token_Info: tokenData});
 };
+
+// Prueba Agregar Uno - Luego Borrar este Código
+const agregarUno = async(req, res, next) => {
+    console.log("agregarUno req", req.body)
+    const { usuario, nombre} = req.body
+    if(!usuario || !nombre || usuario === "" || nombre === "") {
+        let error = new Error ("All fields required")
+        error.status = 400
+        next(error)
+    } else {
+        const dbResponse = await agregarUnooo(req.body)
+        dbResponse.hasOwnProperty("error") ? res.status(500).json(dbResponse) : res.status(201).json(req.body)
+
+    }
+}
 
 // 4 - Provider Edit
 const editOne = async(req, res, next) => {
@@ -171,4 +186,4 @@ const saveNewPass = async (req, res, next) => {
 // 9 - Medical Benefit Authorization
 
 
-module.exports = { listAll, listOne, addOne, editOne, delOne, login, recovery, reset, saveNewPass }
+module.exports = { listAll, listOne, addOne, editOne, delOne, login, recovery, reset, saveNewPass, agregarUno }

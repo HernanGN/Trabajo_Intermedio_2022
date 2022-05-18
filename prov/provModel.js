@@ -36,6 +36,17 @@ const addProv = (prov) => {
     }        
 }
 
+// Agregar Uno - Luego Borrar este Código
+const agregarUnooo = async (user) =>{
+    const query = `INSERT INTO prestadores SET ?`
+    try {
+        return await pool.query(query, user)
+    } catch (error) {
+        //console.log("Tuvimos un error", error)
+        return { "error": error.code }
+    }        
+}
+
 // 4 - Edit Provider By Id
 const editProvById = (id, prov) => {
     const query = `UPDATE prestadores SET ? WHERE idprestador = ${id}`;
