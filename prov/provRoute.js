@@ -21,7 +21,7 @@ router.post("/add", fileUpload.single("imagen"), validatorCreateProv, addOne);
 router.post("/", agregarUno);
 
 // Agregar = Luego Borrar Este Código
-router.post("/register", registrarUno);
+router.post("/registrar", registrarUno);
 
 // 4 - Provider Edit
 router.patch("/:id", editOne);
