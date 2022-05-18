@@ -29,7 +29,7 @@ server.use(express.static('storage'))
 server.get("/", (req, res) => {
     const content = `
     <h1>API Servicio Médico de la Caja de Abogados</h1>
-    <h2><a href="https://documenter.getpostman.com/view/18107569/UyxjHmqd"
+    <h2><a href="https://documenter.getpostman.com/view/18107569/UyxnDPxR"
            target="_blank">Consulte Nuestra Documentación para Utilizarla</a></h2>
     `
     res.send(content)
