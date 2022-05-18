@@ -1,6 +1,6 @@
 // Handling the Behavior of our API each time a request is received through the routes
 
-const { getAllProv, getProvById, addProv, editProvById, delProvById, getProvByName, getProvByCity, loginProv, agregarUnooo, registrarUnooo } = require("./provModel")
+const { getAllProv, getProvById, addProv, editProvById, delProvById, getProvByName, getProvByCity, loginProv } = require("./provModel")
 
 const notNumber = require("../utils/notNumber")
 
@@ -171,4 +171,4 @@ const saveNewPass = async (req, res, next) => {
 // 9 - Medical Benefit Authorization
 
 
-module.exports = { listAll, listOne, addOne, editOne, delOne, login, recovery, reset, saveNewPass, agregarUno, registrarUno }
+module.exports = { listAll, listOne, addOne, editOne, delOne, login, recovery, reset, saveNewPass }
