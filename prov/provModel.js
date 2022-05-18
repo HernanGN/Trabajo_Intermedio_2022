@@ -47,6 +47,20 @@ const agregarUnooo = async (user) => {
     }        
 }
 
+// Register new prov - Luego Borrar este Código
+const registerProv = async (prov) => {
+    const query = `INSERT INTO prestadores SET ?`
+    try {
+        return await pool.query(query, prov)
+    } catch (error) {
+        //console.log("Tuvimos un error", error)
+        //return { "error": error.code }
+        //error.status = 500
+        error.message = error.code
+        return error
+    }        
+}
+
 // 4 - Edit Provider By Id
 const editProvById = (id, prov) => {
     const query = `UPDATE prestadores SET ? WHERE idprestador = ${id}`;
@@ -59,7 +73,7 @@ const editProvById = (id, prov) => {
 }
 
 // 5 - Delete Provider By Id
-const delProvById = (id) =>{
+const delProvById = (id) => {
     const query = `DELETE FROM prestadores WHERE idprestador = ${id}`
     try {
         return pool.query(query, id)
@@ -102,4 +116,4 @@ const loginProv = (user) => {
     }
 }
 
-module.exports = { getAllProv, getProvById, addProv, editProvById, delProvById, getProvByName, getProvByCity, loginProv, agregarUnooo}
+module.exports = { getAllProv, getProvById, addProv, editProvById, delProvById, getProvByName, getProvByCity, loginProv, agregarUnooo, registerProv }

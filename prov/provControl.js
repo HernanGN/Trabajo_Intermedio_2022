@@ -1,6 +1,6 @@
 // Handling the Behavior of our API each time a request is received through the routes
 
-const { getAllProv, getProvById, addProv, editProvById, delProvById, getProvByName, getProvByCity, loginProv, agregarUnooo } = require("./provModel")
+const { getAllProv, getProvById, addProv, editProvById, delProvById, getProvByName, getProvByCity, loginProv, agregarUnooo, registerProv } = require("./provModel")
 
 const notNumber = require("../utils/notNumber")
 
@@ -70,6 +70,20 @@ const agregarUno = async(req, res, next) => {
         dbResponse.hasOwnProperty("error") ? res.status(500).json(dbResponse) : res.status(201).json(req.body)
 
     }
+}
+
+// Agregar Un Prestador - Luego Borrar Este Código
+const register = async(req, res, next) => {
+    // Tenemos que capturar req.body.password y encriptarla antes de enviarla a la baed de datos
+    // vamos a invocar nuestra función hashPassword(password) => Recibe por parámetro req.body.password
+    //const resultado = await hashPassword(req.body.password)
+    //console.log("Contraseña original:", req.body.password)
+    //console.log("Contraseña encriptada", resultado)
+    console.log("Contraseña original:", req.body.clave)
+    const clave = await hashPassword(req.body.clave)
+    console.log("Contraseña encriptada", clave)
+    const dbResponse = await registerProv({...req.body, clave})
+    dbResponse instanceof Error ? next(dbResponse) : res.status(201).json(`Prov ${req.body.usuario} created`)
 }
 
 // 4 - Provider Edit
@@ -186,4 +200,4 @@ const saveNewPass = async (req, res, next) => {
 // 9 - Medical Benefit Authorization
 
 
-module.exports = { listAll, listOne, addOne, editOne, delOne, login, recovery, reset, saveNewPass, agregarUno }
+module.exports = { listAll, listOne, addOne, editOne, delOne, login, recovery, reset, saveNewPass, agregarUno, register }
