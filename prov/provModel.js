@@ -53,13 +53,9 @@ const registrarUnooo = async (prov) => {
     try {
         return await pool.query(query, prov)
     } catch (error) {
-        //console.log("Tuvimos un error", error)
-        //return { "error": error.code }
-        //error.status = 500
         error.message = error.code
         return error
-    }        
-}
+    }
 
 // 4 - Edit Provider By Id
 const editProvById = (id, prov) => {
