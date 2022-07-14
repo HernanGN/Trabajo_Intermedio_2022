@@ -2,6 +2,8 @@ require("dotenv").config()
 
 require("./data/config")
 
+const cors = require("cors");
+
 const PORT = process.env.PORT
 
 const express = require("express")
@@ -11,6 +13,8 @@ const path = require("path")
 const hbs = require("express-handlebars")
 
 const server = express()
+
+server.use(cors());
 
 // Bootstrap file access via static routes
 server.use("/css", express.static(path.join(__dirname, "node_modules/bootstrap/dist/css")))
